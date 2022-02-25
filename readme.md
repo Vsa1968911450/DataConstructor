@@ -17,4 +17,8 @@
 数据对象集
 数据操作集
 抽象：描述数据类型的方法不依赖于具体实现
-算法：有限的指令集 接受输入 产生输出 不能无限循环  每一个操作要有明确的目标
+算法：有限的指令集 接受输入 产生输出 不能无限循环  每一个操作要有明确的目标  复杂度分析
+循环 占用的量不会随着n的变大 而变大 递归有函数调用 
+
+复杂度分析:https://github.com/Vsa1968911450/DataConstructor/blob/main/images/时间复杂度.jpg
+顺序存储结构:https://github.com/Vsa1968911450/DataConstructor/blob/main/images/顺序存储结构.jpg
