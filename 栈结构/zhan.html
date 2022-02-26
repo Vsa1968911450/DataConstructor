@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>121</title>
+</head>
+<body>
+    <script>
+        // class Stack{
+        //     constructor(){
+
+        //     }
+        //     //栈的相关操作
+        //     push(){
+
+        //     }
+        //     pop(){
+
+        //     }
+        //     isEmpty(){
+
+        //     }
+
+        // }
+        // function Stack(){
+        //     let arr = []
+        //     // 封装方法
+        //     Stack.prototype.push =function(val){
+        //        return  arr.push(val)
+        //     }
+        //     Stack.prototype.pop =function(val){
+        //        return  arr.pop(val)
+        //     }
+        // }
+        // number 十进制数  终止条件  除数向下取整 大于0
+        function DecToBin(number){
+            let stack = []
+            let LessNum = 0 // 余数
+            let ChuNUm = 0 // 除数
+            while(number > 0) {
+                LessNum = number % 2
+                console.log(LessNum)
+                stack.push(LessNum)
+                ChuNUm = number / 2
+                console.log(ChuNUm)
+                number = Math.floor(ChuNUm)
+                console.log(number)
+            } 
+            // if(stack.isEmpty())
+            // console.log(stack)
+            return stack
+        }
+        DecToBin(11)
+    </script>
+</body>
+</html>
