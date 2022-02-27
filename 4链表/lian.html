@@ -23,7 +23,7 @@
                 let NewNode = new Node(data) // 创建node
                 if(this.length === 0) {
                     this.header = NewNode
-                    console.log('我的长度为0'+JSON.stringify(this.header))
+                    // console.log('我的长度为0'+JSON.stringify(this.header))
                 } else {
                     let current = this.header //指向第一个节点  current 当前指针
                     while(current.next){  // 判断next指向 next指向下一个节点 如果为空 就是最后一个节点
@@ -44,12 +44,105 @@
                 }
                 return res
             }
+            // insert 指定位置插入  position > 0 不能超过链表长度
+            Lians.prototype.insert = function(position,data){
+                if(position < 0 || position > this.length) return false
+                let NewNode = new Node(data)
+                // 插到第一个
+                if(position === 0) {
+                    NewNode.next = this.header  // 新插入的节点指向header原先指向的节点
+                    this.header = NewNode // header 指向新插入的节点
+                } else {
+                let index = 0
+                   let current = this.header
+                   let previous = null // current 的前一项  // previos 是 current前一项 所以 我们让 previos指向current 然后 current的next 给current
+                    while(index++ < position) { // 先判断index 在 ++ 
+                        previous = current //previos指向current  previous 是current前一项 所以previos要指向current
+                        current = current.next
+                    }
+                    NewNode.next = current  
+                    previous.next = NewNode
+                }
+                this.length ++
+                return true
+            }
+            // get
+            Lians.prototype.get = function(position){
+                if(position < 0 || position >= this.length) return null
+                let NewNode = new Node(position)
+                let current = this.header
+                let index = 0
+                while(index++ < position) {
+                    current = current.next
+                }
+
+                return current.data
+            }
+            // indexOf
+            Lians.prototype.indexOf = function(data){
+                let current = this.header
+                let index = 0
+                // 开始查找
+                while(current){
+                   if(current.data == data) {
+                        return index  //如果找到了 
+                    }
+                    current = current.next // 指向后面一项
+                    index ++ 
+                }
+                return -1   // 循环结束没有找到 return -1
+            }
+            // update
+            Lians.prototype.update = function(position,newData){
+                let current = this.header
+                let index = 0 
+                if(position < 0 || position >= this.length) return false
+                while(index++ < position) {
+                    current = current.next
+                }
+                current.data = newData // 找到的节点信息里面的data修改值
+                return true
+            }
+            // removeAt 
+            Lians.prototype.removeAt = function(position){
+                let current = this.header
+                let index = 0 
+                let pre = null
+                if(position < 0 || position >= this.length) return false
+                if(position === 0) {
+                    this.header = this.header.next
+                } else {
+                   while(index++ < position) {
+                    pre = current
+                    current = current.next
+                }
+                    pre.next = current.next 
+                }
+                this.length --
+                return current.data
+            }
+            // remove
+            Lians.prototype.remove = function(data){
+                 let pos = this.indexOf(data)
+                 return this.removeAt(pos)
+            }
         }
         // 测试
         let list = new Lians()
         list.append('1')
         console.log(list)
         list.append('2')
+        alert(list)
+        list.insert(1,'aaa')
+        alert(list)
+        list.insert(3,'bbb')
+        alert(list)
+        alert(list.get(3))
+        alert(list.indexOf('1'))
+        alert(list.indexOf('121212'))
+        list.update(0,3)
+        alert(list)
+        list.remove('aaa')
         alert(list)
     </script>
 </body>
