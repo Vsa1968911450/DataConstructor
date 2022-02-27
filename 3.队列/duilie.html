@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function Queue() {
+        // 属性  基于数组实现
+        this.arr = []
+        // 方法
+        Queue.prototype.enqueue = function(val){
+            return this.arr.push(val)
+        }
+        Queue.prototype.dequeue = function(){
+            return this.arr.shift()  // pop删除尾部元素 shift删除第一个元素
+        }
+        Queue.prototype.size = function(){
+            return this.arr.length
+        }
+        // Queue.prototype.font = function(){
+        //     return this.arr[0]
+        // }
+    }
+    // let qu = new Queue()
+    // qu.enqueue('123')
+    // console.log(qu)
+    // qu.dequeue()
+    // console.log(qu)
+    // 击鼓传花
+    function passBall(List,number){
+        //创建一个队列结构
+        let ques = new Queue()
+        List.forEach(item=>{
+            ques.enqueue(item)
+        })
+        console.log(ques)
+        while(ques.size() > 1){
+            // 向队列的末尾 添加这一项之前的内容 并且删除这一项之前的内容 此时这一项就变成第一个了 调用删除方法即可
+            for(let i= 0;i<number -1;i++){
+                ques.enqueue(ques.dequeue())
+            }
+            let s =ques.dequeue() 
+            console.log(s)
+        }
+        let a= ques.dequeue()
+        // console.log(a)
+    }
+    passBall(['1','2','3','4','5','6','7','8','9'],4)
+    // 56789123 删除4
+    // 9123567 删除8
+    // 567912 删除3
+    // 12567 删除9
+    // 7125 删除6
+    // 712 删除5
+    //12 删除7
+    //1 删除2
+    </script>
+    
+</body>
+</html>

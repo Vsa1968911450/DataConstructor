@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function PriorityQueue(){
+            //  属性
+            this.arr = []
+            function QueueEl(el,priorty){
+                this.el = el
+                this.priorty = priorty
+            }
+            // 方法
+            PriorityQueue.prototype.enqueue = function(el,priorty){
+                let QueueEl = new PriorityQueue(el,priorty)
+                // 判断队列否为空
+                if(this.arr.length === 0) {
+                    this.arr.push(QueueEl)
+                } else {
+                    for(let i= 0; i<this.arr.length;i++){
+                        if(QueueEl.priorty < this.arr[i]) {
+                            this.arr.splice(i,0,QueueEl)
+                            added = true
+                            break
+                        }
+                    }
+                    if(!added) {
+                        this.arr.push(QueueEl)
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>

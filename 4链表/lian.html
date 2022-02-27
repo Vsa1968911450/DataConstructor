@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>单向链表</title>
+</head>
+<body>
+    <script>
+        function Lians(){
+            // 内部类 节点
+            function Node(data){
+                this.data = data
+                this.next = null  // 指向下个节点
+            }
+            //属性 header 
+            this.header = null
+            // 长度 存放多少节点
+            this.length = 0
+            // append方法
+            Lians.prototype.append = function(data){
+                let NewNode = new Node(data) // 创建node
+                if(this.length === 0) {
+                    this.header = NewNode
+                    console.log('我的长度为0'+JSON.stringify(this.header))
+                } else {
+                    let current = this.header //指向第一个节点  current 当前指针
+                    while(current.next){  // 判断next指向 next指向下一个节点 如果为空 就是最后一个节点
+                        current = current.next
+                    }
+                    current.next = NewNode
+                }
+                this.length ++
+            }
+            // toString 方法 方便测试
+            Lians.prototype.toString = function(data){
+                let current = this.header
+                let res = ''
+                while(current){
+                    console.log(current)
+                    res += current.data + ''
+                    current = current.next
+                }
+                return res
+            }
+        }
+        // 测试
+        let list = new Lians()
+        list.append('1')
+        console.log(list)
+        list.append('2')
+        alert(list)
+    </script>
+</body>
+</html>
