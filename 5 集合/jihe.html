@@ -86,6 +86,19 @@
                 });
                 return togetherSet
             }
+            // 子集
+            Set.prototype.subset = function(oldSet,NewSet){
+                let togetherSet = new Set()
+                // 遍历里面的key
+                let valuesO = oldSet.values()
+                let valuesN = NewSet.values()
+                valuesN.forEach(item => {
+                    if(!oldSet.has(item)){
+                        return false
+                    }
+                });
+                return true
+            }
         }
         let set = new Set()
         let setO = new Set()
