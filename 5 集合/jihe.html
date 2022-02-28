@@ -8,6 +8,7 @@
 </head>
 <body>
     <script>
+        // 封装一个set类
         function Set(){
             // Set集合返回对象
             this.items = {}
@@ -34,7 +35,7 @@
                 return true
             }
             // clear
-            Set.prototype.remove = function(){
+            Set.prototype.clear = function(){
                this.items = {}
             }
             // size
@@ -45,13 +46,67 @@
             Set.prototype.values = function(){
                 return Object.keys(this.items)
             }
+            // 集合间的操作
+            // 并集 union
+            Set.prototype.union = function(oldSet,NewSet){
+                let unionSet = new Set()
+                let valuesO = oldSet.values()
+                let valuesN = NewSet.values()
+                valuesN.forEach(item => {
+                    unionSet.add(item)
+                });
+                valuesO.forEach(item => {
+                    unionSet.add(item)
+                });
+                return unionSet
+            }
+            // 交集 intersection
+            Set.prototype.intersection = function(oldSet,NewSet){
+                let togetherSet = new Set()
+                // 遍历里面的key
+                let valuesO = oldSet.values()
+                let valuesN = NewSet.values()
+                valuesN.forEach(item => {
+                    if(oldSet.has(item)){
+                        togetherSet.add(item)
+                    }
+                });
+                return togetherSet
+            }
+            // 差集
+            Set.prototype.chaji = function(oldSet,NewSet){
+                let togetherSet = new Set()
+                // 遍历里面的key
+                let valuesO = oldSet.values()
+                let valuesN = NewSet.values()
+                valuesN.forEach(item => {
+                    if(!oldSet.has(item)){
+                        togetherSet.add(item)
+                    }
+                });
+                return togetherSet
+            }
         }
         let set = new Set()
-        set.add('1')
-        set.add('2')
-        set.add('3')
-        set.add('4')
-        alert(set.values())
+        let setO = new Set()
+        let setN = new Set() 
+        // set.add('1')
+        // set.add('2')
+        // set.add('3')
+        // set.add('4')
+        // alert(set.values())
+        setO.add('1')
+        setO.add('2')
+        setO.add('3')
+        setO.add('4')
+        setO.add('5')
+        setN.add('2')
+        setN.add('3')
+        setN.add('8')
+        setN.add('10')
+        alert(set.union(setO,setN).values())
+        alert(set.intersection(setO,setN).values())
+        alert(set.chaji(setO,setN).values())
     </script>
 </body>
 </html>
