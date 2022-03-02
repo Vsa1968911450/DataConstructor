@@ -13,22 +13,25 @@
             this.storage = []
             this.count = 0 // 存放多少元素
             this.limit = 7 // hash总长度 扩容前 取一个质数
-            function Hash(str,size){
-            let hashCode = 0
-            // 霍纳法则
-            for(let i=0;i<str.length;i++){
-                hashCode = 37 * hashCode +  str.charCodeAt(i)   // 选择一个质数 用37比较多
-            }
-            index = hashCode % size
-            return index
+            HashTable.prototype.hashCode = function(str,size){
+                let hashCode = 0
+                // 霍纳法则
+                for(let i=0;i<str.length;i++){
+                    hashCode = 37 * hashCode +  str.charCodeAt(i)   // 选择一个质数 用37比较多
+                }
+                index = hashCode % size
+                return index
             } 
             HashTable.prototype.put = function(key,value){
                 let index = this.hashCode(key,this.limit)  // 更具key获取index值
+                console.log(index)
                 let bucket = this.storage[index]    // 更具index取出对应的bucket
-                if(bucket === null) {
+                console.log(bucket)
+                if(bucket == null) {
                     bucket = []
-                    this.storagep[index] = bucket
+                    this.storage[index] = bucket
                 }
+                console.log(bucket)
                 // 判断是否是修改数据 如果没有就是新增 有就是修改
                 for(let i=0;i<bucket.length;i++){
                     let turple = bucket[i]
@@ -40,9 +43,15 @@
                 // 进行新增
                 bucket.push([key,value])
                 this.count ++
+                // 判断是不是要扩容操作
+                if(this.count > this.limit * 0.75){
+                    let newSize = this.limit*2
+                    let newPrime = this.getPrimes(newSize)
+                    this.resize(newPrime)
+                }
             }
             // get 获取
-            HashTable.prototype.put = function(key){
+            HashTable.prototype.get = function(key){
                 let index = this.hashCode(key,this.limit)
                 let bucket = this.storage[index]    // 更具index取出对应的bucket
                 if(bucket === null) {
@@ -74,9 +83,51 @@
                         return null
                     }
                 }
+                 // 判断是不是要缩小操作
+                 if(this.limit > 7 && this.count < this.limit * 0.25){
+                    let newSize = Math.floor(this.limit /2)
+                    let newPrime = this.getPrimes(newSize)
+                    this.resize(newPrime)
+                }
+            }
+            // 扩容 resize
+            HashTable.prototype.resize = function(newLimit){
+                let oldStorage = this.storage
+                this.storage = []
+                this.count = 0
+                this.limit = newLimit
+                // oldStorage里面原来的key value
+                for(let i= 0 ;i<oldStorage.length;i++){
+                    let bucket = oldStorage[i]
+                    if(bucket === null) {
+                        continue
+                    }
+                    for(let j= 0 ;i<bucket.length;j++){
+                        let turple = bucket[j]
+                        this.put(turple[0],turple[1]) // key和value重新插入
+                    }
+                }
+            }
+            // 判断是不是质数
+            HashTable.prototype.isPrimes = function(number){
+                let temp = parseInt(Math.sqrt(number))//获取number的平方根
+                for(let i = 2;i<=temp;i++){
+                    if(number % 2 === 0){
+                        return false
+                    }
+                }
+            } 
+            // 获取一个质数
+            HashTable.prototype.getPrimes = function(number){
+                while(!isPrimes(number)){
+                    number ++
+                }
+                return number
             }
         }
-
+        let ht = new HashTable()
+        ht.put('123','123')
+        alert(ht)
     </script>
 </body>
 </html>
