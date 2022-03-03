@@ -41,6 +41,76 @@
                     }
                 }
             }
+            // 先序遍历  先遍历左子树 然后右子树
+            BinarySearchTree.prototype.preOrderTraversers =function(handler){
+                this.preOrderTraverseNode(this.root,handler)
+            }
+            // 第一次 是更节点 也就是node 下面递归 处理左节点
+            BinarySearchTree.prototype.preOrderTraverseNode =function(node,handler){
+                if(node != null) {
+                    handler(node.key)
+                    this.preOrderTraverseNode(node.left,handler) // 处理节点 后面处理左节点
+                    this.preOrderTraverseNode(node.right,handler) // 处理右节点
+                }
+            }
+            // 中序遍历 左子树 自己 后序遍历
+            BinarySearchTree.prototype.middleOrderTraversers =function(handler){
+                this.middleOrderTraverseNode(this.root,handler)
+            }
+            // 第一次 处理左子树 然后节点 然后 右子树
+            BinarySearchTree.prototype.middleOrderTraverseNode =function(node,handler){
+                if(node !== null) {
+                    this.middleOrderTraverseNode(node.left,handler) // 处理节点 后面处理左节点
+                    handler(node.key)
+                    this.middleOrderTraverseNode(node.right,handler) // 处理右节点
+                }
+            }
+            // 后序遍历 左子树 右子树 自己
+            BinarySearchTree.prototype.postOrderTraversers =function(handler){
+                this.postOrderTraverseNode(this.root,handler)
+            }
+            // 第一次 左子树 右子树 自己
+            BinarySearchTree.prototype.postOrderTraverseNode =function(node,handler){
+                if(node !== null) {
+                    this.postOrderTraverseNode(node.left,handler) // 处理节点 后面处理左节点        
+                    this.postOrderTraverseNode(node.right,handler) // 处理右节点
+                    handler(node.key)
+                }
+            }
+            // 二叉树 最大值 一直取节点的右节点
+            BinarySearchTree.prototype.Max = function(){
+                let node = new Node()
+                let key = null
+                while(node !== null) {
+                    key = node.key
+                    node = node.right
+                }
+                return key
+            }
+            // 二叉树 最小值 一直取节点的左节点
+            BinarySearchTree.prototype.Min = function(){
+                let node = new Node()
+                let key = null
+                while(node !== null) {
+                    key = node.key
+                    node = node.left
+                }
+                return key
+            }
+            //搜索search
+            BinarySearchTree.prototype.search = function(key){
+                let node = this.root
+                while(node !== null) {
+                    if(key >node.key) { //往右找
+                        node = node.right
+                    } else if(key < node.left){
+                        node = node.left
+                    } else {
+                        node = node.key
+                    }
+                }
+                return false
+            }
         }
         let bst = new BinarySearchTree()
         bst.insert(11)
@@ -58,6 +128,12 @@
         bst.insert(18)
         bst.insert(25)
         alert(JSON.stringify(bst))
+        let res = ''
+        bst.preOrderTraversers(function(key){
+            console.log(key)
+            res += key + ' '
+        })
+        alert(res)
     </script>
 </body>
 </html>
