@@ -111,6 +111,96 @@
                 }
                 return false
             }
+            //删除操作 remove 找到父节点 判断左节点还是右节点  然后让parent的left或者right为null
+            BinarySearchTree.prototype.remove =function(key) {
+                let current = this.root  // 要删除的节点
+                let isLeft = true //是不是左节点
+                let parent = null
+                while(current.key != key){
+                    parent = current
+                    if(key < current.key) {
+                        isLeft = true
+                        current = current.left
+                    } else {
+                        isLeft = false
+                        current = current.right
+                    }
+                    //找到了最后节点 也没有找到 
+                    if(parent === null) return false
+                }
+                // 有两个子节点  取节点的左边 最大的（没有右边的子节点） 或者 右边最小的 （没有左边的子节点）
+                // 思路取前驱和后继 左边的最大节点的key 或者右边最小节点的key 让要删除那个节点的key等于那个值 然后 找到左边最大 或者 右边最小的父节点 让他指向那个节点指向null
+                if(current.right && current.left){
+                    let LastNode = this.GetLast(current)  // 后继
+                    if(current === this.root) {
+                        this.root = LastNode
+                    } else if(isLeft){
+                        parent.left = LastNode
+                    } else {
+                        parent.right = LastNode
+                    }
+                    LastNode.left = current.left
+                }
+                
+                // 只有一个子节点 判断左 空   要判断是不是根节点
+                if(current.right === null){
+                    if(current === this.root) {
+                        this.root = current.left
+                    } else if(isLeft){
+                        parent.left = current.left
+                    } else {
+                        parent.right = current.right
+                    }
+                } else if(current.left === null) {
+                    if(current === this.root) {
+                        this.root = current.right
+                    }else if(isLeft){
+                        parent.left = current.right  //子节点都在父节点的左边
+                    } else {
+                        parent.right = current.right
+                    }
+                }
+                
+                // 没有子节点
+                if(current.left === null && current.right === null) {
+                    if(current === this.root) { // 是不是根节点
+                        this.root = null
+                    } else {
+                        if(isLeft){
+                            parent.left = null
+                        } else {
+                            parent.right = null
+                        }
+                    }
+                }
+            }
+            // 寻找前驱 和后继 就是靠近删除节点最近的数字 
+            BinarySearchTree.prototype.GetFront = function(delNode){
+                let searchNode = delNode
+                let current = delNode.left
+                while( current !== null) {
+                    searchNode = current
+                    current = current.right
+                }
+                return searchNode
+            }
+            BinarySearchTree.prototype.GetLast = function(delNode){
+                let searchNode = delNode
+                let current = delNode.right
+                let parent = delNode
+                while( current !== null) {
+                    parent = searchNode
+                    searchNode = current
+                    current = current.left
+                }
+                // 寻找是不是他的right节点
+                if(searchNode != delNode.right) {
+                    parent.left = searchNode.right
+                    searchNode.right = delNode.right
+                }
+                return searchNode
+            }
+
         }
         let bst = new BinarySearchTree()
         bst.insert(11)
@@ -127,13 +217,20 @@
         bst.insert(20)
         bst.insert(18)
         bst.insert(25)
-        alert(JSON.stringify(bst))
+        // alert(JSON.stringify(bst))
         let res = ''
         bst.preOrderTraversers(function(key){
             console.log(key)
             res += key + ' '
         })
-        alert(res)
+        // alert(res)
+        bst.remove(9)
+        // let res = ''
+        bst.preOrderTraversers(function(key){
+            console.log(key)
+            res += key + ' '
+        })
+        alert(bst)
     </script>
 </body>
 </html>
