@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图结构</title>
+</head>
+<body>
+    <script src="dic.js"></script>
+    <script src="queue.js"></script>
+    <script>
+        function Graph(){
+            //属性 顶点 数组 边 字典
+            this.vertex = [] // 顶点
+            this.edge = new Dic() // 边 
+            // 顶点方法
+            Graph.prototype.addVertex = function(v){
+                this.vertex.push(v)
+                this.edge.set(v,[])
+            }
+            // 添加边  无向图 
+            Graph.prototype.addEdge = function(v1,v2){
+                this.edge.get(v1).push(v2) // 取到v1的数组 然后加入v2 有向图
+                this.edge.get(v2).push(v1) // 无向图 v1 到 v2 v2也能到v1
+            }
+            // toString
+            Graph.prototype,toString = function(){
+                let str = ''
+                let vEdge = []
+                // 遍历所有顶点 和 顶点对应的边
+                this.vertex.forEach(item=>{
+                    res += item + "->"
+                    vEdge = this.edge.get(item)
+                    vEdge.forEach(i=>{
+                        res += i + ' '
+                    })
+                    res += '\n'
+                })
+                return res
+            }
+            // 初始化颜色
+            Graph.prototype.initialClor = function(){
+                let color = []
+                this.vertex.forEach(item=>{
+                    color[item] = 'white' // 初始化为白色
+                })
+                return color
+            }
+            // 广度优先搜索  从第一个顶点开始遍历 先宽后深 先访问同一层次的相邻点  基于队列 BFS
+            Graph.prototype.bfs = function(firstV,handler){
+                let color = this.initialClor()  // 初始化 白色
+                let queue = new Queue()
+                queue.enqueue(firstV) // bfs 现将顶点加入到队列
+                while(!queue.isEmpty()){
+                    let v = queue.dequeue() // 取出一个节点
+                    console.log(v)
+                    let list = this.edge.get(v) // 和v有关的点
+                    console.log(list)
+                    color[v] = 'gray' //白色改成灰色 标记
+                    list.forEach(item=>{
+                        if(color[item] === 'white'){  // 判断是不是白色 白色改成灰色 
+                            color[item] = 'gray'
+                            queue.enqueue(item)
+                        }
+                    })
+                    handler(v) //访问顶点 将顶点设置为黑色
+                    color[v] = 'black'
+                    console.log(color)
+                }
+            }
+            // 深度有优先搜索
+            Graph.prototype.dfs = function(firstV,handler){
+                let colors = []
+                colors = this.initialClor()
+                this.dfsVis(firstV,colors,handler)
+
+            }
+            // 递归调用访问节点
+            Graph.prototype.dfsVis = function(v,colors,handler){
+                colors[v] = 'gray'
+                handler(v)
+                // 访问相邻的节点
+                let vlist = this.edge.get(v)
+                vlist.forEach(item=>{
+                    console.log(colors[item] == 'white')
+                        if(colors[item] == 'white'){  // 判断是不是白色 白色改成灰色 
+                            this.dfsVis(item,colors,handler)
+                        }
+                    })
+                colors[v] = 'black' 
+            }
+        }
+        let g = new Graph()
+        let myG =['A','B','C','D','E','F','I','H','G']
+        myG.forEach(item=>{
+            g.addVertex(item)
+        })
+        g.addEdge('A','B')
+        g.addEdge('A','C')
+        g.addEdge('A','D')
+        g.addEdge('C','D')
+        g.addEdge('C','G')
+        g.addEdge('D','G')
+        g.addEdge('D','H')
+        g.addEdge('B','E')
+        g.addEdge('B','F')
+        g.addEdge('E','I')
+        let res = ''
+        // g.bfs(g.vertex[0],function(v){
+        //     res += v + ' '
+        // }) 
+        g.dfs(g.vertex[0],function(v){
+            res += v + ' '
+        }) 
+        alert(res)
+    </script>
+</body>
+</html>

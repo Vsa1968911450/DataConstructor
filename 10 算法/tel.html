@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>算法</title>
+</head>
+<body>
+    <script>
+        function ArrayList(){
+            this.arr = []
+            ArrayList.prototype.insert = function(item){
+                this.arr.push(item)
+            }
+            ArrayList.prototype.toString = function(){
+                return this.arr.join('-')
+            }
+            // 交换数据方法
+            ArrayList.prototype.swap = function(m,n){
+                let temp = this.arr[m]
+                this.arr[m] = this.arr[n]
+                this.arr[n] = temp
+            }
+            // 冒泡排序
+            ArrayList.prototype.bubbleSort = function(){
+                // for(let i = 0;i<this.arr.length;i++){
+                //     if(this.arr[i]>this.arr[i+1]){ // 比较相邻
+                //         // let temp = this.arr[i]
+                //         // this.arr[i] = this.arr[i+1]
+                //         // this.arr[i+1] = temp
+                //         this.swap(i,i+1)
+                //     }
+                // }
+                for(let j=this.arr.length-1;j>=0;j--) {
+                    for(let i=0;i<j;i++){
+                        if(this.arr[i]>this.arr[i+1]){ // 比较相邻
+                            this.swap(i,i+1)
+                        }
+                    }
+                }
+            }
+            // 选择排序
+            ArrayList.prototype.selectionSort = function(){
+                // for(let i = min+1;i<this.arr.length ;i++){
+                //     if(this.arr[min]>this.arr[i]) {
+                //         min = i
+                //     }
+                // }
+                // this.swap(min,0)
+                for(let j=0;j<this.arr.length-1;j++) {
+                    let min = j // 遍历右边找出最小值
+                    for(let i = min+1;i<this.arr.length ;i++){
+                        if(this.arr[min]>this.arr[i]) {
+                            min = i
+                        }
+                    }
+                    this.swap(min,j)
+                }
+            }
+            // 插入排序
+            // 希尔排序
+            // 快速排序
+        }
+        let list = new ArrayList()
+        list.insert(66)
+        list.insert(88)
+        list.insert(12)
+        list.insert(87)
+        list.insert(100)
+        list.insert(5)
+        list.insert(566)
+        list.insert(23)
+        alert(list)
+        // list.bubbleSort()
+        list.selectionSort()
+        alert(list)
+    </script>
+    
+</body>
+</html>
