@@ -59,8 +59,77 @@
                 }
             }
             // 插入排序
+            ArrayList.prototype.insertSort = function(){
+                //外层循环
+                for(let i =1;i<this.arr.length;i++){ // 0的位置就一个元素看做有序 就从位置为1的元素开始比较
+                    let temp = this.arr[i] // 循环的i项取出来进行比较 看看是否需要移动位置
+                    let j = i
+                    while(this.arr[j-1]>temp && j > 0){  // 这个元素和他所有前面的看做一部分 判断大小 如果有大小出入 进行移动
+                        this.arr[j] = this.arr[j-1]
+                        j--
+                    }
+                    this.arr[j] = temp
+                }
+            }
             // 希尔排序
+            ArrayList.prototype.shellSort = function(){
+                // 初始化增量 
+                let gap = Math.floor(this.arr.length / 2)
+                while(gap >= 1) { //间隔
+                    for(let i = gap;i<this.arr.length;i++){
+                        let temp = this.arr[i]
+                        let j = i
+                        while(this.arr[j-gap] > temp && j>gap -1){  // 第一个元素的index是j-gap 因为是第一个元素我们当他是有序的 排序的时候从第二个开始排序
+                            this.arr[j] = this.arr[j-gap]
+                            j -= gap
+                        }
+                        this.arr[j] = temp
+                    }
+                    gap = Math.floor(gap / 2) // 重新给gap赋值 最后 gap为0 停止
+                }
+            }
             // 快速排序
+            ArrayList.prototype.quickSort = function(){
+                this.quickSortNode(0,this.arr.length-1)
+            }
+            ArrayList.prototype.quickSortNode = function(left,right){
+                if(left >= right){ // 递归结束
+                    return
+                }
+                let piovt = this.media(left,right)//标杆   此时枢纽的下标为 right -1  这个数据的 0  right  right -1 此时是已经排好序的所以 我们从 数据的第1项 开始 到 right-1 结束找到位置
+                let i = left
+                let j = right - 1 // piovt的位置
+                while(true) {
+                    while(this.arr[++i] < piovt){}
+                    while(this.arr[--j] > piovt){}
+                    if(i<j){
+                        this.swap(i,j)
+                    } else {
+                        break
+                    }
+                }
+                this.swap(i,right -1) // 将我们取到的数从倒数第二个 拿到现在锁得到的i的位置 
+                // 递归调用
+                this.quickSortNode(left,i-1) // 左边的部分
+                this.quickSortNode(i+1,right) // 右边的部分
+            }
+            // 快速排序枢纽选择
+            ArrayList.prototype.media = function(left,right){
+                let center = Math.floor((left + right) /2)
+                console.log(this.arr[center]) 
+                // 判断大小 进行交换
+                if(this.arr[left]>this.arr[center]){
+                    this.swap(left,center)
+                }
+                if(this.arr[left]>this.arr[right]){
+                    this.swap(left,right)
+                }
+                if(this.arr[center]>this.arr[right]){
+                    this.swap(center,right)
+                }
+                this.swap(center,right - 1)
+                return this.arr[right - 1] // center 节点
+            }
         }
         let list = new ArrayList()
         list.insert(66)
@@ -73,7 +142,10 @@
         list.insert(23)
         alert(list)
         // list.bubbleSort()
-        list.selectionSort()
+        // list.selectionSort()
+        // list.insertSort()
+        // list.shellSort()
+        list.quickSort()
         alert(list)
     </script>
     
